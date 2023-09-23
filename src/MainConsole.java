@@ -3,70 +3,12 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class Main {
+public class MainConsole {
 
     static ArrayList<String> people = new ArrayList();      //lista graczy
     static ArrayList<Double> cost = new ArrayList();        //lista wygranych
     static ArrayList<String> Transfer = new ArrayList<>();  //lista wszystkich transferów
-
-    private static JTextField playersField = new JTextField(5);
-    private static JButton submitButton = new JButton("Submit");
-
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Transfer Calculator");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(300, 500);
-        frame.setLayout(new BorderLayout());
-
-        JPanel inputPanel = new JPanel();
-        inputPanel.setLayout(new FlowLayout());
-
-        JLabel playersLabel = new JLabel("Ile zawodników:");
-        inputPanel.add(playersLabel);
-        inputPanel.add(playersField);
-        inputPanel.add(submitButton);
-
-        frame.add(inputPanel, BorderLayout.NORTH);
-
-        JTextArea resultTextArea = new JTextArea(10, 40);
-        resultTextArea.setEditable(false);
-        frame.add(new JScrollPane(resultTextArea), BorderLayout.CENTER);
-
-        submitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String playersText = playersField.getText();
-                int players = Integer.parseInt(playersText);
-                people.clear();
-                cost.clear();
-                Transfer.clear();
-                for (int i = 1; i <= players; ++i) {
-                    String playerName = JOptionPane.showInputDialog("Podaj imię " + i + " zawodnika:");
-                    people.add(playerName);
-                }
-                for (int i = 0; i < players; ++i) {
-                    String costText = JOptionPane.showInputDialog("Podaj wygraną dla " + people.get(i) + ":");
-                    double playerCost = Double.parseDouble(costText);
-                    cost.add(playerCost);
-                }
-
-                if (CheckValues(cost)) {
-                    Transfers();
-                    for (String s : Transfer)
-                        resultTextArea.append(s + "\n");
-                } else {
-                    resultTextArea.setText("Suma wygranych nie wynosi 0, proszę wprowadzić poprawne dane.");
-                }
-            }
-        });
-
-        frame.setVisible(true);
-    }
 
     public static boolean CheckValues(ArrayList<Double> list){    //sprawdza czy kwoty są poprawne
         double sum = 0;                                           //jezeli ich suma != 0 to jest źle policzona kasa
@@ -98,11 +40,11 @@ public class Main {
         try {
             Scanner scanner = new Scanner(new File("src/data.txt"));
 
-            for(int i = 0; i < 6; ++i){
+            for(int i = 0; i < 4; ++i){
                 String tmp = scanner.nextLine();
                 people.add(tmp);
             }
-            for(int i = 0; i < 6; ++i){
+            for(int i = 0; i < 4; ++i){
                 double tmp = Double.parseDouble(scanner.nextLine());
                 cost.add(tmp);
             }
@@ -127,14 +69,18 @@ public class Main {
 
         while(loop){
             Sort();
-            double tmp = cost.get(0) + cost.get(cost.size() - 1);   //suma najwiekszej wygranej i przegranej
+            System.out.println(cost);
+            double tmp = cost.get(0) + cost.get(cost.size()-1);   //suma najwiekszej wygranej i przegranej
+            System.out.println(tmp);
 
             if (tmp >= 0) {     //jezeli cala przegrana pokrywa kogos wygrana
                 cost.set(0, tmp);
                 Transfer.add((people.get(people.size() - 1)) + " daje " + -cost.get(cost.size() - 1) + " dla " + people.get(0));
+                System.out.println(Transfer.get(Transfer.size()-1));
                 cost.set((cost.size() - 1), 0.0);
             }else if (tmp < 0) {    //jezeli przegrana jest wieksza od wygranej
                 Transfer.add((people.get(people.size() - 1)) + " daje " + cost.get(0) + " dla " + people.get(0));
+                System.out.println(Transfer.get(Transfer.size()-1));
                 cost.set(0, 0.0);
                 cost.set((cost.size() - 1), tmp);
             }
@@ -146,5 +92,15 @@ public class Main {
                     break;
                 }
         }
+    }
+
+    public static void main(String[] args) {
+
+        FileInput();
+        //ConsoleInput();
+        System.out.println(CheckValues(cost));
+
+        Transfers();
+        System.out.println(Transfer);
     }
 }

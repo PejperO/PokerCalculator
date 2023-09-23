@@ -1,3 +1,17 @@
+A
+B
+C
+D
+50
+-30
+-30
+10
+
+
+
+
+
+
 Jaro
 Napruty
 Lament
