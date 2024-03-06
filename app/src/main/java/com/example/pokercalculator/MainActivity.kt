@@ -1,10 +1,16 @@
 package com.example.pokercalculator
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -12,6 +18,9 @@ class MainActivity : AppCompatActivity() {
     private val people = mutableListOf<String>()
     private val cost = mutableListOf<Double>()
     private val transferList = mutableListOf<String>()
+
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: PlayerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +30,12 @@ class MainActivity : AppCompatActivity() {
         val editTextName = findViewById<EditText>(R.id.editTextName)
         val editTextBalance = findViewById<EditText>(R.id.editTextBalance)
         val buttonCalculate = findViewById<Button>(R.id.buttonCalculate)
+        val textViewResult = findViewById<TextView>(R.id.textViewResult)
+
+        recyclerView = findViewById(R.id.recyclerViewPlayers)
+        adapter = PlayerAdapter(people, cost)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
         buttonAdd.setOnClickListener {
             val name = editTextName.text.toString().trim()
@@ -31,11 +46,11 @@ class MainActivity : AppCompatActivity() {
                 if (balance != null) {
                     people.add(name)
                     cost.add(balance)
-                    updateTextView()
+                    adapter.notifyDataSetChanged()
                     editTextName.text.clear()
                     editTextBalance.text.clear()
                 } else {
-                    editTextBalance.error = "Invalid balance"
+                    editTextBalance.error = "Niepoprawny Wynik"
                 }
             }
         }
@@ -43,14 +58,28 @@ class MainActivity : AppCompatActivity() {
         buttonCalculate.setOnClickListener {
             val message = checkValues(cost)
             if (message.isNotEmpty()) {
-                findViewById<TextView>(R.id.textViewResult).text = message
+                textViewResult.text = message
             } else {
                 calculateTransfers()
+                val result = StringBuilder()
+                for (transfer in transferList) {
+                    result.append(transfer).append("\n")
+                }
+                textViewResult.text = result.toString()
             }
+        }
+
+        textViewResult.setOnLongClickListener {
+            val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = ClipData.newPlainText("Szczegóły przelewów", textViewResult.text)
+            clipboard.setPrimaryClip(clip)
+            Toast.makeText(this, "Skopiowane do schowka", Toast.LENGTH_SHORT).show()
+            true
         }
     }
 
     private fun calculateTransfers() {
+        transferList.clear()
         var loop = true
 
         while (loop) {
@@ -59,10 +88,10 @@ class MainActivity : AppCompatActivity() {
 
             if (tmp >= 0) {
                 cost[0] = tmp
-                transferList.add("${people[people.size - 1]} daje ${-cost[cost.size - 1]} dla ${people[0]}")
+                transferList.add("${people[people.size - 1]} daje ${"%.2f".format(-cost[cost.size - 1])}zł dla ${people[0]}")
                 cost[cost.size - 1] = 0.0
             } else if (tmp < 0) {
-                transferList.add("${people[people.size - 1]} daje ${cost[0]} dla ${people[0]}")
+                transferList.add("${people[people.size - 1]} daje ${"%.2f".format(cost[0])}zł dla ${people[0]}")
                 cost[0] = 0.0
                 cost[cost.size - 1] = tmp
             }
@@ -75,13 +104,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
-        // Po obliczeniach wyświetl wyniki
-        val result = StringBuilder()
-        for (transfer in transferList) {
-            result.append(transfer).append("\n")
-        }
-        findViewById<TextView>(R.id.textViewResult).text = result.toString()
     }
 
     private fun sort() {
@@ -95,15 +117,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateTextView() {
-        val textViewPlayers = findViewById<TextView>(R.id.textViewPlayers)
-        val stringBuilder = StringBuilder()
-        for (i in people.indices) {
-            stringBuilder.append("${people[i]}: ${"%.2f".format(cost[i])}zł\n")
-        }
-        textViewPlayers.text = stringBuilder.toString()
-    }
-
     private fun checkValues(list: List<Double>): String {
         var sum = 0.0
         for (value in list) {
@@ -115,9 +128,9 @@ class MainActivity : AppCompatActivity() {
             ""
         } else {
             if (sum > 0) {
-                "Dane są błędne, brakuje ${"%.2f".format(deviation)} zł."
+                "Niepoprawny Wynik, brakuje ${"%.2f".format(deviation)}zł."
             } else {
-                "Dane są błędne, jest ponad ${"%.2f".format(deviation)} zł."
+                "Niepoprawny Wynik, jest ponad ${"%.2f".format(deviation)}zł."
             }
         }
     }

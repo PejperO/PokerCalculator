@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark_background"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
     tools:context=".MainActivity">
 
     <ImageView
         android:id="@+id/imageViewLogo"
-        android:layout_width="235dp"
-        android:layout_height="118dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="32dp"
         android:contentDescription="Logo"
         android:src="@drawable/logo" />
@@ -28,81 +29,102 @@
         android:textSize="24sp"
         android:layout_below="@id/imageViewLogo"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="0dp" />
 
-    <EditText
-        android:id="@+id/editTextName"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Imię Gracza"
-        android:textColorHint="@color/white"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:backgroundTint="@color/transparent_white"
+        android:layout_height="match_parent"
         android:layout_below="@id/textViewTitle"
-        android:layout_marginTop="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"/>
+        android:layout_marginTop="10dp"
+        android:fillViewport="true">
 
-    <EditText
-        android:id="@+id/editTextBalance"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Wygrana"
-        android:textColorHint="@color/white"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:backgroundTint="@color/transparent_white"
-        android:inputType="numberSigned|numberDecimal"
-        android:layout_below="@id/editTextName"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/buttonAdd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Dodaj Gracza"
-        android:textSize="18sp"
-        android:backgroundTint="@color/dark_red"
-        android:textColor="@android:color/white"
-        android:layout_below="@id/editTextBalance"
-        android:layout_marginTop="16dp"
-        android:layout_centerHorizontal="true"/>
+            <LinearLayout
+                android:id="@+id/linearAddPlayer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="0dp"
+                android:layout_marginTop="10dp">
 
-    <Button
-        android:id="@+id/buttonCalculate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Oblicz"
-        android:textSize="18sp"
-        android:backgroundTint="@color/dark_red"
-        android:textColor="@android:color/white"
-        android:layout_below="@id/buttonAdd"
-        android:layout_marginTop="16dp"
-        android:layout_centerHorizontal="true"/>
+                <EditText
+                    android:id="@+id/editTextName"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:hint="Imie Gracza"
+                    android:textColorHint="@android:color/white"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:backgroundTint="@color/transparent_white"/>
 
-    <TextView
-        android:id="@+id/textViewPlayers"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:layout_below="@id/buttonCalculate"
-        android:layout_marginTop="32dp"
-        android:layout_centerHorizontal="true"/>
+                <EditText
+                    android:id="@+id/editTextBalance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Wynik"
+                    android:textColorHint="@android:color/white"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:backgroundTint="@color/transparent_white"
+                    android:inputType="numberSigned|numberDecimal"/>
 
-    <TextView
-        android:id="@+id/textViewResult"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:layout_below="@id/textViewPlayers"
-        android:layout_marginTop="16dp"
-        android:layout_centerHorizontal="true"/>
+                <Button
+                    android:id="@+id/buttonAdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dodaj"
+                    android:textSize="14sp"
+                    android:backgroundTint="@color/dark_red"
+                    android:textColor="@android:color/white"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/buttonsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@id/linearAddPlayer"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true">
+
+                <Button
+                    android:id="@+id/buttonCalculate"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Oblicz"
+                    android:textSize="18sp"
+                    android:backgroundTint="@color/dark_red"
+                    android:textColor="@android:color/white"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"/>
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewPlayers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/buttonsLayout"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"/>
+
+            <TextView
+                android:id="@+id/textViewResult"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:layout_below="@id/recyclerViewPlayers"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true"/>
+
+        </RelativeLayout>
+    </ScrollView>
 
 </RelativeLayout>
