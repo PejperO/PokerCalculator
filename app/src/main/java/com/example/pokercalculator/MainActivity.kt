@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity() {
         val textViewPlayers = findViewById<TextView>(R.id.textViewPlayers)
         val stringBuilder = StringBuilder()
         for (i in people.indices) {
-            stringBuilder.append("${people[i]} - ${"%.2f".format(cost[i])}\n")
+            stringBuilder.append("${people[i]}: ${"%.2f".format(cost[i])}zł\n")
         }
         textViewPlayers.text = stringBuilder.toString()
     }
