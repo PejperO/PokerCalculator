@@ -26,15 +26,37 @@
         android:layout_height="wrap_content"
         android:text="Poker Calculator"
         android:textColor="@color/dark_red"
-        android:textSize="24sp"
+        android:textSize="30sp"
         android:layout_below="@id/imageViewLogo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="0dp" />
 
+    <LinearLayout
+        android:id="@+id/buttonsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/textViewTitle"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true">
+
+        <Button
+            android:id="@+id/buttonCalculate"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Oblicz"
+            android:textSize="18sp"
+            android:backgroundTint="@color/dark_red"
+            android:textColor="@android:color/white"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"/>
+    </LinearLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/textViewTitle"
+        android:layout_below="@id/buttonsLayout"
         android:layout_marginTop="10dp"
         android:fillViewport="true">
 
@@ -77,38 +99,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Dodaj"
-                    android:textSize="14sp"
+                    android:textSize="18sp"
                     android:backgroundTint="@color/dark_red"
                     android:textColor="@android:color/white"/>
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/buttonsLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_below="@id/linearAddPlayer"
-                android:layout_marginTop="10dp"
-                android:layout_centerHorizontal="true">
-
-                <Button
-                    android:id="@+id/buttonCalculate"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:text="Oblicz"
-                    android:textSize="18sp"
-                    android:backgroundTint="@color/dark_red"
-                    android:textColor="@android:color/white"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="16dp"/>
-            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewPlayers"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/buttonsLayout"
+                android:layout_below="@id/linearAddPlayer"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"/>

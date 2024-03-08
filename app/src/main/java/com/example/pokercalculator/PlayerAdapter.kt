@@ -47,7 +47,8 @@ class PlayerAdapter(private val players: MutableList<String>, private val balanc
 
         fun bind(player: String, balance: Double) {
             editTextPlayerName.setText(player)
-            editTextPlayerBalance.setText(String.format("%.2f", balance))
+            //editTextPlayerBalance.setText(String.format("%.2f", balance))
+            editTextPlayerBalance.setText(balance.toString())
         }
     }
 
