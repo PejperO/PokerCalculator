@@ -12,13 +12,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import java.util.*
+import java.util.Collections
 import kotlin.math.abs
 
 class MainActivity : AppCompatActivity() {
 
     private val people = mutableListOf<String>()
     private val cost = mutableListOf<Double>()
+    private val rebuy = mutableListOf<Int>()
     private val transferList = mutableListOf<String>()
 
     private lateinit var recyclerView: RecyclerView
@@ -31,34 +32,28 @@ class MainActivity : AppCompatActivity() {
 
         val buttonAdd = findViewById<Button>(R.id.buttonAdd)
         val editTextName = findViewById<EditText>(R.id.editTextName)
-        val editTextBalance = findViewById<EditText>(R.id.editTextBalance)
         val buttonCalculate = findViewById<Button>(R.id.buttonCalculate)
         val textViewResult = findViewById<TextView>(R.id.textViewResult)
 
         recyclerView = findViewById(R.id.recyclerViewPlayers)
-        adapter = PlayerAdapter(people, cost)
+        adapter = PlayerAdapter(people, cost, rebuy)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         buttonAdd.setOnClickListener {
             val name = editTextName.text.toString().trim()
-            val balanceText = editTextBalance.text.toString().trim()
 
-            if (name.isNotEmpty() && balanceText.isNotEmpty()) {
-                val balance = balanceText.toDoubleOrNull()
-                if (balance != null) {
-                    people.add(name)
-                    cost.add(balance)
-                    adapter.notifyDataSetChanged()
-                    editTextName.text.clear()
-                    editTextBalance.text.clear()
-                } else {
-                    editTextBalance.error = "Niepoprawny Wynik"
-                }
+            if (name.isNotEmpty()) {
+                people.add(name)
+                cost.add(0.0)  // Automatically add 0.0 for balance
+                rebuy.add(0)   // Automatically add 0 for rebuy
+                adapter.notifyDataSetChanged()
+                editTextName.text.clear()
             }
         }
 
         buttonCalculate.setOnClickListener {
+            adjustBalancesForRebuys() // Perform rebuy adjustments
             val message = checkValues(cost)
             if (message.isNotEmpty()) {
                 textViewResult.text = message
@@ -78,6 +73,16 @@ class MainActivity : AppCompatActivity() {
             clipboard.setPrimaryClip(clip)
             Toast.makeText(this, "Skopiowane do schowka", Toast.LENGTH_SHORT).show()
             true
+        }
+    }
+
+    private fun adjustBalancesForRebuys() {
+        for (i in cost.indices) {
+            val rebuyCount = rebuy[i]
+            val originalBalance = cost[i]
+            // Adjust balance according to rebuy rules
+            val adjustedBalance = originalBalance - 50 - rebuyCount * 50
+            cost[i] = adjustedBalance
         }
     }
 
@@ -110,7 +115,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun sort() {
-        for (i in 0 until cost.size - 1) {
+        for (i in 0 until cost.size) {
             for (j in 0 until cost.size - i - 1) {
                 if (cost[j] < cost[j + 1]) {
                     Collections.swap(cost, j, j + 1)
@@ -127,7 +132,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val deviation = abs(sum)
-        return if (sum == 0.0) {
+        return if (deviation < 0.01) { // Allow a small tolerance to account for floating-point errors
             ""
         } else {
             if (sum > 0) {

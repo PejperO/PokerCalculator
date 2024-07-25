@@ -83,17 +83,6 @@
                     android:textSize="18sp"
                     android:backgroundTint="@color/transparent_white"/>
 
-                <EditText
-                    android:id="@+id/editTextBalance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="Wynik"
-                    android:textColorHint="@android:color/white"
-                    android:textColor="@android:color/white"
-                    android:textSize="18sp"
-                    android:backgroundTint="@color/transparent_white"
-                    android:inputType="numberSigned|numberDecimal"/>
-
                 <Button
                     android:id="@+id/buttonAdd"
                     android:layout_width="wrap_content"
@@ -104,15 +93,14 @@
                     android:textColor="@android:color/white"/>
             </LinearLayout>
 
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewPlayers"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/linearAddPlayer"
                 android:layout_marginTop="10dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"/>
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"/>
 
             <TextView
                 android:id="@+id/textViewResult"
