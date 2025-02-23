@@ -7,8 +7,12 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
 
-class PlayerAdapter(private val players: MutableList<String>, private val balances: MutableList<Double>, private val rebuys: MutableList<Int>) :
-    RecyclerView.Adapter<PlayerAdapter.ViewHolder>() {
+class PlayerAdapter(
+    private val players: MutableList<String>,
+    private val balances: MutableList<Double>,
+    private val rebuys: MutableList<Int>,
+    private var useRebuy: Boolean  // Nowa zmienna do kontrolowania trybu
+) : RecyclerView.Adapter<PlayerAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.player_item, parent, false)
@@ -23,6 +27,13 @@ class PlayerAdapter(private val players: MutableList<String>, private val balanc
         return players.size
     }
 
+    fun setUseRebuy(newUseRebuy: Boolean) {
+        if (useRebuy != newUseRebuy) {
+            useRebuy = newUseRebuy
+            notifyItemRangeChanged(0, players.size) // Odśwież tylko istniejące elementy
+        }
+    }
+
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val editTextPlayerName: EditText = itemView.findViewById(R.id.editTextPlayerName)
         private val editTextPlayerBalance: EditText = itemView.findViewById(R.id.editTextPlayerBalance)
@@ -35,7 +46,7 @@ class PlayerAdapter(private val players: MutableList<String>, private val balanc
                 val balanceText = editTextPlayerBalance.text.toString()
                 val rebuyText = editTextPlayerRebuy.text.toString()
                 val balance = if (balanceText.isEmpty()) 0.0 else balanceText.toDouble()
-                val rebuy = if (rebuyText.isEmpty()) 0 else rebuyText.toInt()
+                val rebuy = if (!useRebuy) 0 else if (rebuyText.isEmpty()) 0 else rebuyText.toInt()
                 updatePlayer(adapterPosition, playerName, balance, rebuy)
             }
 
@@ -59,7 +70,15 @@ class PlayerAdapter(private val players: MutableList<String>, private val balanc
         fun bind(player: String, balance: Double, rebuy: Int) {
             editTextPlayerName.setText(player)
             editTextPlayerBalance.setText(balance.toString())
-            editTextPlayerRebuy.setText(rebuy.toString())
+
+            // Pokazuje lub ukrywa pole rebuy w zależności od trybu
+            if (useRebuy) {
+                editTextPlayerRebuy.visibility = View.VISIBLE
+                editTextPlayerRebuy.setText(rebuy.toString())
+            } else {
+                editTextPlayerRebuy.visibility = View.GONE
+                editTextPlayerRebuy.setText("0") // Ustawienie rebuy na 0
+            }
         }
     }
 

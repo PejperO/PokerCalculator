@@ -50,7 +50,16 @@
             android:backgroundTint="@color/dark_red"
             android:textColor="@android:color/white"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="16dp"/>
+            android:layout_marginEnd="5dp"/>
+
+        <Button
+            android:id="@+id/buttonSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/dark_red"
+            android:text="Z Rebuy"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
     </LinearLayout>
 
     <ScrollView

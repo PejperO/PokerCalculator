@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
     private val cost = mutableListOf<Double>()
     private val rebuy = mutableListOf<Int>()
     private val transferList = mutableListOf<String>()
+    private var useRebuy = true  // Domyślnie używamy rebuy
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: PlayerAdapter
@@ -31,12 +32,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val buttonAdd = findViewById<Button>(R.id.buttonAdd)
+        val buttonSwitch = findViewById<Button>(R.id.buttonSwitch)
         val editTextName = findViewById<EditText>(R.id.editTextName)
         val buttonCalculate = findViewById<Button>(R.id.buttonCalculate)
         val textViewResult = findViewById<TextView>(R.id.textViewResult)
 
         recyclerView = findViewById(R.id.recyclerViewPlayers)
-        adapter = PlayerAdapter(people, cost, rebuy)
+        adapter = PlayerAdapter(people, cost, rebuy, useRebuy)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -45,15 +47,24 @@ class MainActivity : AppCompatActivity() {
 
             if (name.isNotEmpty()) {
                 people.add(name)
-                cost.add(0.0)  // Automatically add 0.0 for balance
-                rebuy.add(0)   // Automatically add 0 for rebuy
+                cost.add(0.0)  // Automatycznie ustawiamy 0.0 dla wyniku
+                rebuy.add(0)   // Automatycznie ustawiamy 0 dla rebuy
                 adapter.notifyDataSetChanged()
                 editTextName.text.clear()
             }
         }
 
+        buttonSwitch.setOnClickListener {
+            useRebuy = !useRebuy
+            buttonSwitch.text = if (useRebuy) "Z Rebuy" else "Bez Rebuy"
+            adapter.setUseRebuy(useRebuy) // Aktualizujemy adapter, aby ukryć/pokazać pole rebuy
+            Toast.makeText(this, "Zmieniono tryb na: ${buttonSwitch.text}", Toast.LENGTH_SHORT).show()
+        }
+
         buttonCalculate.setOnClickListener {
-            adjustBalancesForRebuys() // Perform rebuy adjustments
+            if (useRebuy) {
+                adjustBalancesForRebuys()
+            }
             val message = checkValues(cost)
             if (message.isNotEmpty()) {
                 textViewResult.text = message
@@ -77,10 +88,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun adjustBalancesForRebuys() {
+        if (!useRebuy) return // Nie modyfikujemy kosztów, jeśli tryb jest "bez rebuy"
+
         for (i in cost.indices) {
             val rebuyCount = rebuy[i]
             val originalBalance = cost[i]
-            // Adjust balance according to rebuy rules
+            // Odejmujemy bazowe 50 + 50 za każdą wartość rebuy
             val adjustedBalance = originalBalance - 50 - rebuyCount * 50
             cost[i] = adjustedBalance
         }
@@ -132,7 +145,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val deviation = abs(sum)
-        return if (deviation < 0.01) { // Allow a small tolerance to account for floating-point errors
+        return if (deviation < 0.01) { // Minimalna tolerancja na błędy zmiennoprzecinkowe
             ""
         } else {
             if (sum > 0) {

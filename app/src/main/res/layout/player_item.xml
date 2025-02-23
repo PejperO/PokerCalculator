@@ -7,7 +7,7 @@
 
     <EditText
         android:id="@+id/editTextPlayerName"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:backgroundTint="@color/transparent_white"
@@ -18,7 +18,7 @@
 
     <EditText
         android:id="@+id/editTextPlayerBalance"
-        android:layout_width="wrap_content"
+        android:layout_width="70dp"
         android:layout_height="match_parent"
         android:backgroundTint="@color/transparent_white"
         android:hint="Wynik"
@@ -29,7 +29,7 @@
 
     <EditText
         android:id="@+id/editTextPlayerRebuy"
-        android:layout_width="30dp"
+        android:layout_width="50dp"
         android:layout_height="match_parent"
         android:backgroundTint="@color/transparent_white"
         android:hint="Rebuy"
