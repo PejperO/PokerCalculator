@@ -5,6 +5,8 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -22,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     private val rebuy = mutableListOf<Int>()
     private val transferList = mutableListOf<String>()
     private var useRebuy = true  // Domyślnie używamy rebuy
+    private var rebuyValue = 50
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: PlayerAdapter
@@ -36,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         val editTextName = findViewById<EditText>(R.id.editTextName)
         val buttonCalculate = findViewById<Button>(R.id.buttonCalculate)
         val textViewResult = findViewById<TextView>(R.id.textViewResult)
+        val editRebuyValue = findViewById<EditText>(R.id.editRebuyValue)
 
         recyclerView = findViewById(R.id.recyclerViewPlayers)
         adapter = PlayerAdapter(people, cost, rebuy, useRebuy)
@@ -59,7 +63,33 @@ class MainActivity : AppCompatActivity() {
             buttonSwitch.text = if (useRebuy) "Z Rebuy" else "Bez Rebuy"
             adapter.setUseRebuy(useRebuy) // Aktualizujemy adapter, aby ukryć/pokazać pole rebuy
             Toast.makeText(this, "Zmieniono tryb na: ${buttonSwitch.text}", Toast.LENGTH_SHORT).show()
+
+            // Ukryj/pokaż pole edycji wartości rebuy
+            editRebuyValue.visibility = if (useRebuy) {
+                EditText.VISIBLE
+            } else {
+                EditText.GONE
+            }
         }
+
+        editRebuyValue.setText(rebuyValue.toString())
+
+        editRebuyValue.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
+            override fun afterTextChanged(s: Editable?) {
+                // Spróbuj sparsować wpisaną liczbę; jeśli nie da się – zostaw starą wartość
+                val newValue = s.toString().toIntOrNull()
+                if (newValue != null) {
+                    rebuyValue = newValue
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Ustawiono rebuy na $rebuyValue",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        })
 
         buttonCalculate.setOnClickListener {
             if (useRebuy) {
@@ -94,7 +124,7 @@ class MainActivity : AppCompatActivity() {
             val rebuyCount = rebuy[i]
             val originalBalance = cost[i]
             // Odejmujemy bazowe 50 + 50 za każdą wartość rebuy
-            val adjustedBalance = originalBalance - 50 - rebuyCount * 50
+            val adjustedBalance = originalBalance - rebuyValue - rebuyCount * rebuyValue
             cost[i] = adjustedBalance
         }
     }

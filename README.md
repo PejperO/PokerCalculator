@@ -72,6 +72,12 @@ This Poker Calculator application is a Kotlin-based Android app designed to calc
 2. Open the project in Android Studio.
 3. Build and run the project on an Android device or emulator.
 
+### Installing on a Mobile Device
+1. Go to the Releases section of this repository.
+2. Download the latest app-release.apk file directly to your mobile device.
+3. Once the download is complete, tap on the file to begin the installation process.
+>Note: Depending on your Android version, you may need to allow installations from unknown sources. This option is typically found in your device's security settings.
+
 ## License
 
 This project is licensed under the GPL-3.0 License. See the [LICENSE](LICENSE) file for details.
@@ -82,4 +88,3 @@ This project is licensed under the GPL-3.0 License. See the [LICENSE](LICENSE) f
 - **RecyclerView and Adapters:** Gained experience in using RecyclerView to display lists of data.
 - **Cross-Platform Mobile Development:** Explored the potential of Kotlin Multiplatform Mobile (KMM) for creating cross-platform apps.
 - **Software Licensing:** Understood the implications of GPL-3.0 license for open-source projects.
-   

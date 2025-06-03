@@ -8,35 +8,39 @@
     android:paddingEnd="16dp"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:id="@+id/imageViewLogo"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="32dp"
-        android:contentDescription="Logo"
-        android:src="@drawable/logo" />
-
-    <TextView
-        android:id="@+id/textViewTitle"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/Logo"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Poker Calculator"
-        android:textColor="@color/dark_red"
-        android:textSize="30sp"
-        android:layout_below="@id/imageViewLogo"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="0dp" />
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="10dp">
+
+        <ImageView
+            android:id="@+id/imageViewLogo"
+            android:layout_width="40dp"
+            android:layout_height="70dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="Logo"
+            android:src="@drawable/logo" />
+
+        <TextView
+            android:id="@+id/textViewName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="Poker Calculator"
+            android:textColor="@color/dark_red"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/buttonsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@id/textViewTitle"
+        android:layout_below="@id/Logo"
         android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true">
 
@@ -47,6 +51,7 @@
             android:layout_height="wrap_content"
             android:text="Oblicz"
             android:textSize="18sp"
+            android:textStyle="bold"
             android:backgroundTint="@color/dark_red"
             android:textColor="@android:color/white"
             android:layout_marginStart="8dp"
@@ -60,6 +65,16 @@
             android:text="Z Rebuy"
             android:textColor="@android:color/white"
             android:textSize="18sp" />
+        <EditText
+            android:id="@+id/editRebuyValue"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:hint="Rebuy value"
+            android:inputType="number"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/transparent_white"
+            android:layout_marginStart="8dp"/>
+
     </LinearLayout>
 
     <ScrollView

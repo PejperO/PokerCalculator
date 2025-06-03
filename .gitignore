@@ -1,15 +1,39 @@
+# Build output
+/build/
+/app/build/
+*.apk
+*.apks
+*.aab
+
+# Captures
+/captures/
+
+# Native build
+.cxx/
+.externalNativeBuild/
+
+# Android Studio/IntelliJ IDEA
+.idea/
 *.iml
-.gradle
-/local.properties
+.gradle/
+local.properties
+
+# Specific .idea config files
 /.idea/caches
 /.idea/libraries
 /.idea/modules.xml
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
+
+# Signing keys
+keystore.properties
+*.jks
+*.keystore
+
+# OS-specific
 .DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
-local.properties
+Thumbs.db
+
+# Logi
+*.log
