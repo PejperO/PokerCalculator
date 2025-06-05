@@ -16,10 +16,7 @@ This Poker Calculator application is a Kotlin-based Android app designed to calc
 
 ## Screenshots
 
-<div align=center>
-  <img alt="pejpero" src="https://github.com/user-attachments/assets/ed8b92c0-09ee-4fde-a9d8-2d83a7a437bc" height="800px"></a>
-  <img alt="pejpero" src="https://github.com/user-attachments/assets/2d011a77-8d09-4766-a86c-34ae72b519f8" height="800px"></a>
-</div>
+![poker](https://github.com/user-attachments/assets/552e6889-25eb-4531-961d-7977b4c5d9ec)
 
 ## Development Roadmap
 
@@ -73,8 +70,8 @@ This Poker Calculator application is a Kotlin-based Android app designed to calc
 3. Build and run the project on an Android device or emulator.
 
 ### Installing on a Mobile Device
-1. Go to the Releases section of this repository.
-2. Download the latest app-release.apk file directly to your mobile device.
+1. Go to the [Releases](https://github.com/PejperO/pokerCalculator/releases) section of this repository.
+2. Download the latest `app-release.apk` file directly to your mobile device.
 3. Once the download is complete, tap on the file to begin the installation process.
 >Note: Depending on your Android version, you may need to allow installations from unknown sources. This option is typically found in your device's security settings.
 
