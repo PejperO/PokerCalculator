@@ -1,6 +1,8 @@
 # Build output
 /build/
 /app/build/
+/app/debug/
+/app/release/
 *.apk
 *.apks
 *.aab
