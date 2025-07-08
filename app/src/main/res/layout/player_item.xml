@@ -1,48 +1,28 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="0dp">
 
     <EditText
         android:id="@+id/editTextPlayerName"
-        android:layout_width="100dp"
-        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:backgroundTint="@color/transparent_white"
-        android:hint="Imie Gracza"
-        android:textColor="@android:color/white"
-        android:textColorHint="@android:color/white"
-        android:textSize="18sp" />
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"/>
 
     <EditText
         android:id="@+id/editTextPlayerBalance"
-        android:layout_width="70dp"
-        android:layout_height="match_parent"
-        android:backgroundTint="@color/transparent_white"
-        android:hint="Wynik"
-        android:inputType="numberSigned|numberDecimal"
-        android:textColor="@android:color/white"
-        android:textColorHint="@android:color/white"
-        android:textSize="18sp" />
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textColor="#FFFFFF"/>
 
     <EditText
         android:id="@+id/editTextPlayerRebuy"
-        android:layout_width="50dp"
-        android:layout_height="match_parent"
-        android:backgroundTint="@color/transparent_white"
-        android:hint="Rebuy"
-        android:textColor="@android:color/white"
-        android:textColorHint="@android:color/white"
-        android:textSize="18sp" />
-
-    <Button
-        android:id="@+id/buttonEdit"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:backgroundTint="@color/dark_red"
-        android:text="Edytuj"
-        android:textColor="@android:color/white"
-        android:textSize="14sp" />
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textColor="#FFFFFF"/>
 </LinearLayout>

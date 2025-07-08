@@ -7,7 +7,9 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.widget.Button
+import android.widget.Switch
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import java.util.Collections
 import kotlin.math.abs
+import android.graphics.Color
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,11 +38,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val buttonAdd = findViewById<Button>(R.id.buttonAdd)
-        val buttonSwitch = findViewById<Button>(R.id.buttonSwitch)
+        val switchRebuy   = findViewById<Switch>(R.id.switchRebuy)
         val editTextName = findViewById<EditText>(R.id.editTextName)
         val buttonCalculate = findViewById<Button>(R.id.buttonCalculate)
         val textViewResult = findViewById<TextView>(R.id.textViewResult)
         val editRebuyValue = findViewById<EditText>(R.id.editRebuyValue)
+        val headerRebuy = findViewById<TextView>(R.id.headerRebuy)
+
+        headerRebuy.visibility = if (switchRebuy.isChecked) View.VISIBLE else View.GONE
 
         recyclerView = findViewById(R.id.recyclerViewPlayers)
         adapter = PlayerAdapter(people, cost, rebuy, useRebuy)
@@ -58,18 +64,14 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        buttonSwitch.setOnClickListener {
-            useRebuy = !useRebuy
-            buttonSwitch.text = if (useRebuy) "Z Rebuy" else "Bez Rebuy"
-            adapter.setUseRebuy(useRebuy) // Aktualizujemy adapter, aby ukryć/pokazać pole rebuy
-            Toast.makeText(this, "Zmieniono tryb na: ${buttonSwitch.text}", Toast.LENGTH_SHORT).show()
-
-            // Ukryj/pokaż pole edycji wartości rebuy
-            editRebuyValue.visibility = if (useRebuy) {
-                EditText.VISIBLE
-            } else {
-                EditText.GONE
-            }
+        switchRebuy.setOnCheckedChangeListener { _, isChecked ->
+            useRebuy = isChecked
+            //buttonSwitch.text = if (useRebuy) "Z Rebuy" else "Bez Rebuy"
+            adapter.setUseRebuy(useRebuy)
+            // pokaż/ukryj pole wartości rebuy
+            editRebuyValue.visibility = if (useRebuy) View.VISIBLE else View.GONE
+            //Toast.makeText(this, "Tryb: ${buttonSwitch.text}", Toast.LENGTH_SHORT).show()
+            headerRebuy.visibility = if (isChecked) View.VISIBLE else View.GONE
         }
 
         editRebuyValue.setText(rebuyValue.toString())
@@ -92,19 +94,26 @@ class MainActivity : AppCompatActivity() {
         })
 
         buttonCalculate.setOnClickListener {
+            // 1) Zrób kopię kosztów — oryginał pozostaje nietknięty
+            val workingCosts = cost.toMutableList()
+
+            // 2) Jeśli rebuy włączony, to dopiero na kopii odejmij opłaty
             if (useRebuy) {
-                adjustBalancesForRebuys()
+                for (i in workingCosts.indices) {
+                    workingCosts[i] = workingCosts[i] - rebuyValue - rebuy[i] * rebuyValue
+                }
             }
-            val message = checkValues(cost)
+
+            // 3) Sprawdź sumę na kopii
+            val message = checkValues(workingCosts)
             if (message.isNotEmpty()) {
+                textViewResult.setTextColor(Color.RED)
                 textViewResult.text = message
             } else {
-                calculateTransfers()
-                val result = StringBuilder()
-                for (transfer in transferList) {
-                    result.append(transfer).append("\n")
-                }
-                textViewResult.text = result.toString()
+                // 4) Przelicz przelewy na kopii
+                val tempTransfers = calculateTransfers(workingCosts)
+                textViewResult.setTextColor(Color.WHITE)
+                textViewResult.text = tempTransfers.joinToString("\n")
             }
         }
 
@@ -117,44 +126,51 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun adjustBalancesForRebuys() {
-        if (!useRebuy) return // Nie modyfikujemy kosztów, jeśli tryb jest "bez rebuy"
+//    private fun adjustBalancesForRebuys() {
+//        if (!useRebuy) return // Nie modyfikujemy kosztów, jeśli tryb jest "bez rebuy"
+//
+//        for (i in cost.indices) {
+//            val rebuyCount = rebuy[i]
+//            val originalBalance = cost[i]
+//            // Odejmujemy bazowe 50 + 50 za każdą wartość rebuy
+//            val adjustedBalance = originalBalance - rebuyValue - rebuyCount * rebuyValue
+//            cost[i] = adjustedBalance
+//        }
+//    }
 
-        for (i in cost.indices) {
-            val rebuyCount = rebuy[i]
-            val originalBalance = cost[i]
-            // Odejmujemy bazowe 50 + 50 za każdą wartość rebuy
-            val adjustedBalance = originalBalance - rebuyValue - rebuyCount * rebuyValue
-            cost[i] = adjustedBalance
-        }
-    }
+    private fun calculateTransfers(costList: MutableList<Double>): List<String> {
+        val result = mutableListOf<String>()
+        val localCost = costList.toMutableList()
+        val localPeople = people.toMutableList()
 
-    private fun calculateTransfers() {
-        transferList.clear()
-        var loop = true
-
-        while (loop) {
-            sort()
-            val tmp = cost[0] + cost[cost.size - 1]
-
-            if (tmp >= 0) {
-                cost[0] = tmp
-                transferList.add("${people[people.size - 1]} daje ${"%.2f".format(-cost[cost.size - 1])}zł dla ${people[0]}")
-                cost[cost.size - 1] = 0.0
-            } else if (tmp < 0) {
-                transferList.add("${people[people.size - 1]} daje ${"%.2f".format(cost[0])}zł dla ${people[0]}")
-                cost[0] = 0.0
-                cost[cost.size - 1] = tmp
-            }
-
-            loop = false
-            for (i in 0 until cost.size - 1) {
-                if (cost[i] != 0.0) {
-                    loop = true
-                    break
+        while (true) {
+            // 1) sortuj malejąco według localCost
+            for (i in localCost.indices) {
+                for (j in 0 until localCost.size - i - 1) {
+                    if (localCost[j] < localCost[j + 1]) {
+                        Collections.swap(localCost, j, j + 1)
+                        Collections.swap(localPeople, j, j + 1)
+                    }
                 }
             }
+            // 2) połóż skrajną parę
+            val top = localCost[0]
+            val bottom = localCost[localCost.size - 1]
+            if (top + bottom >= 0) {
+                // nadpłata nad długiego
+                result.add("${localPeople.last()} daje ${"%.2f".format(-bottom)}zł dla ${localPeople.first()}")
+                localCost[0] = top + bottom
+                localCost[localCost.size - 1] = 0.0
+            } else {
+                // dług przewyższa nadpłatę
+                result.add("${localPeople.last()} daje ${"%.2f".format(top)}zł dla ${localPeople.first()}")
+                localCost[0] = 0.0
+                localCost[localCost.size - 1] = top + bottom
+            }
+            // 3) sprawdź, czy wszystkie są zerowe
+            if (localCost.all { it == 0.0 }) break
         }
+        return result
     }
 
     private fun sort() {

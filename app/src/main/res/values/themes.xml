@@ -1,9 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.PokerCalculator" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/dark_red</item>
-        <item name="colorPrimaryDark">@color/dark_red</item>
-        <item name="colorAccent">@color/dark_red</item>
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimaryDark">@color/black</item>
+        <item name="colorAccent">@color/black</item>
     </style>
 
     <style name="Theme.PokerCalculator" parent="Base.Theme.PokerCalculator" />

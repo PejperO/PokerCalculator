@@ -3,77 +3,90 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_background"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp"
+    android:background="@color/black"
+    android:padding="16dp"
     tools:context=".MainActivity">
 
-    <LinearLayout
-        android:id="@+id/Logo"
+    <ImageView
+        android:id="@+id/imageViewLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="62dp"
+        android:contentDescription="Logo"
+        android:src="@drawable/logo" />
+
+    <TextView
+        android:id="@+id/appTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="10dp">
-
-        <ImageView
-            android:id="@+id/imageViewLogo"
-            android:layout_width="40dp"
-            android:layout_height="70dp"
-            android:layout_marginEnd="8dp"
-            android:contentDescription="Logo"
-            android:src="@drawable/logo" />
-
-        <TextView
-            android:id="@+id/textViewName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="Poker Calculator"
-            android:textColor="@color/dark_red"
-            android:textSize="30sp"
-            android:textStyle="bold" />
-    </LinearLayout>
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@id/imageViewLogo"
+        android:layout_marginTop="8dp"
+        android:text="Poker Calculator"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:textColor="@color/red" />
 
     <LinearLayout
         android:id="@+id/buttonsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@id/Logo"
+        android:layout_below="@id/appTitle"
         android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true">
 
         <Button
             android:id="@+id/buttonCalculate"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="36dp"
             android:layout_height="wrap_content"
-            android:text="Oblicz"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:backgroundTint="@color/dark_red"
-            android:textColor="@android:color/white"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="5dp"/>
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/red"
+            android:text="Oblicz"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/buttonSwitch"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/dark_red"
-            android:text="Z Rebuy"
-            android:textColor="@android:color/white"
-            android:textSize="18sp" />
+            android:layout_marginTop="13dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:text="Rebuy"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:textSize="14sp" />
+
+            <Switch
+                android:id="@+id/switchRebuy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:thumbTint="@color/red"
+                android:trackTint="@color/white"
+                android:trackTintMode="src_over"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
+        </LinearLayout>
+
         <EditText
             android:id="@+id/editRebuyValue"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/white"
             android:hint="Rebuy value"
             android:inputType="number"
-            android:textColor="@android:color/white"
-            android:backgroundTint="@color/transparent_white"
-            android:layout_marginStart="8dp"/>
+            android:textColor="@color/white" />
 
     </LinearLayout>
 
@@ -102,10 +115,10 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:hint="Imie Gracza"
-                    android:textColorHint="@android:color/white"
-                    android:textColor="@android:color/white"
+                    android:textColorHint="@color/white"
+                    android:textColor="@color/white"
                     android:textSize="18sp"
-                    android:backgroundTint="@color/transparent_white"/>
+                    android:backgroundTint="@color/white"/>
 
                 <Button
                     android:id="@+id/buttonAdd"
@@ -113,15 +126,58 @@
                     android:layout_height="wrap_content"
                     android:text="Dodaj"
                     android:textSize="18sp"
-                    android:backgroundTint="@color/dark_red"
-                    android:textColor="@android:color/white"/>
+                    android:backgroundTint="@color/red"
+                    android:textColor="@color/white"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/headerRow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@id/linearAddPlayer"
+                android:layout_marginTop="8dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp">
+
+                <TextView
+                    android:id="@+id/headerPlayer"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Gracz"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"/>
+
+                <TextView
+                    android:id="@+id/headerScore"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Wynik"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:gravity="start"
+                    android:textColor="@color/white"/>
+
+                <TextView
+                    android:id="@+id/headerRebuy"
+                    android:layout_width="48dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Rebuy"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:gravity="end"
+                    android:textColor="@color/white"/>
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewPlayers"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/linearAddPlayer"
+                android:layout_below="@id/headerRow"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"/>

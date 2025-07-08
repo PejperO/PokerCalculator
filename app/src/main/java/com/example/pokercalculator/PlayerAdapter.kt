@@ -38,17 +38,17 @@ class PlayerAdapter(
         private val editTextPlayerName: EditText = itemView.findViewById(R.id.editTextPlayerName)
         private val editTextPlayerBalance: EditText = itemView.findViewById(R.id.editTextPlayerBalance)
         private val editTextPlayerRebuy: EditText = itemView.findViewById(R.id.editTextPlayerRebuy)
-        private val buttonEditPlayer: Button = itemView.findViewById(R.id.buttonEdit)
+        //private val buttonEditPlayer: Button = itemView.findViewById(R.id.buttonEdit)
 
         init {
-            buttonEditPlayer.setOnClickListener {
-                val playerName = editTextPlayerName.text.toString()
-                val balanceText = editTextPlayerBalance.text.toString()
-                val rebuyText = editTextPlayerRebuy.text.toString()
-                val balance = if (balanceText.isEmpty()) 0.0 else balanceText.toDouble()
-                val rebuy = if (!useRebuy) 0 else if (rebuyText.isEmpty()) 0 else rebuyText.toInt()
-                updatePlayer(adapterPosition, playerName, balance, rebuy)
-            }
+//            buttonEditPlayer.setOnClickListener {
+//                val playerName = editTextPlayerName.text.toString()
+//                val balanceText = editTextPlayerBalance.text.toString()
+//                val rebuyText = editTextPlayerRebuy.text.toString()
+//                val balance = if (balanceText.isEmpty()) 0.0 else balanceText.toDouble()
+//                val rebuy = if (!useRebuy) 0 else if (rebuyText.isEmpty()) 0 else rebuyText.toInt()
+//                updatePlayer(adapterPosition, playerName, balance, rebuy)
+//            }
 
             editTextPlayerBalance.setOnFocusChangeListener { _, hasFocus ->
                 if (!hasFocus) {
