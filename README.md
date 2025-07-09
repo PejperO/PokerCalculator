@@ -16,7 +16,7 @@ This Poker Calculator application is a Kotlin-based Android app designed to calc
 
 ## Screenshots
 
-![poker](https://github.com/user-attachments/assets/552e6889-25eb-4531-961d-7977b4c5d9ec)
+![poker](https://github.com/user-attachments/assets/19de7a08-626c-4a09-acaf-b6b63948e58f)
 
 ## Development Roadmap
 
@@ -40,6 +40,7 @@ This Poker Calculator application is a Kotlin-based Android app designed to calc
 4. **Cross-Platform Support:**
    - Extend the application to iOS using Kotlin Multiplatform Mobile (KMM).
    - Ensure seamless functionality and UI experience across both platforms.
+   >The IOS version in Swift is in the testing phase and will be available soon.
 
 5. **Enhanced User Interface:**
    - Improve the design and usability of the app.
@@ -74,6 +75,8 @@ This Poker Calculator application is a Kotlin-based Android app designed to calc
 2. Download the latest `app-release.apk` file directly to your mobile device.
 3. Once the download is complete, tap on the file to begin the installation process.
 >Note: Depending on your Android version, you may need to allow installations from unknown sources. This option is typically found in your device's security settings.
+
+>The IOS version in Swift is in the testing phase and will be available soon.
 
 ## License
 
