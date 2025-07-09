@@ -25,20 +25,19 @@ class MainActivity : AppCompatActivity() {
     private val people = mutableListOf<String>()
     private val cost = mutableListOf<Double>()
     private val rebuy = mutableListOf<Int>()
-    private val transferList = mutableListOf<String>()
     private var useRebuy = true  // Domyślnie używamy rebuy
     private var rebuyValue = 50
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: PlayerAdapter
 
-    @SuppressLint("NotifyDataSetChanged")
+    @SuppressLint("NotifyDataSetChanged", "UseSwitchCompatOrMaterialCode", "MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         val buttonAdd = findViewById<Button>(R.id.buttonAdd)
-        val switchRebuy   = findViewById<Switch>(R.id.switchRebuy)
+        val switchRebuy = findViewById<Switch>(R.id.switchRebuy)
         val editTextName = findViewById<EditText>(R.id.editTextName)
         val buttonCalculate = findViewById<Button>(R.id.buttonCalculate)
         val textViewResult = findViewById<TextView>(R.id.textViewResult)
@@ -66,11 +65,8 @@ class MainActivity : AppCompatActivity() {
 
         switchRebuy.setOnCheckedChangeListener { _, isChecked ->
             useRebuy = isChecked
-            //buttonSwitch.text = if (useRebuy) "Z Rebuy" else "Bez Rebuy"
             adapter.setUseRebuy(useRebuy)
-            // pokaż/ukryj pole wartości rebuy
             editRebuyValue.visibility = if (useRebuy) View.VISIBLE else View.GONE
-            //Toast.makeText(this, "Tryb: ${buttonSwitch.text}", Toast.LENGTH_SHORT).show()
             headerRebuy.visibility = if (isChecked) View.VISIBLE else View.GONE
         }
 
@@ -107,12 +103,19 @@ class MainActivity : AppCompatActivity() {
             // 3) Sprawdź sumę na kopii
             val message = checkValues(workingCosts)
             if (message.isNotEmpty()) {
-                textViewResult.setTextColor(Color.RED)
+                val parts = message.split(" ")
+                if(parts[2] == "brakuje")
+                    textViewResult.setTextColor(Color.RED)
+                else
+                    textViewResult.setTextColor(Color.GREEN)
                 textViewResult.text = message
             } else {
                 // 4) Przelicz przelewy na kopii
                 val tempTransfers = calculateTransfers(workingCosts)
-                textViewResult.setTextColor(Color.WHITE)
+                if(tempTransfers[0] == "Nie ma graczy")
+                    textViewResult.setTextColor(Color.RED)
+                else
+                    textViewResult.setTextColor(Color.WHITE)
                 textViewResult.text = tempTransfers.joinToString("\n")
             }
         }
@@ -126,22 +129,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//    private fun adjustBalancesForRebuys() {
-//        if (!useRebuy) return // Nie modyfikujemy kosztów, jeśli tryb jest "bez rebuy"
-//
-//        for (i in cost.indices) {
-//            val rebuyCount = rebuy[i]
-//            val originalBalance = cost[i]
-//            // Odejmujemy bazowe 50 + 50 za każdą wartość rebuy
-//            val adjustedBalance = originalBalance - rebuyValue - rebuyCount * rebuyValue
-//            cost[i] = adjustedBalance
-//        }
-//    }
-
     private fun calculateTransfers(costList: MutableList<Double>): List<String> {
         val result = mutableListOf<String>()
         val localCost = costList.toMutableList()
         val localPeople = people.toMutableList()
+
+        if(localPeople.isEmpty()) {
+            result.add("Nie ma graczy")
+            return result
+        }
 
         while (true) {
             // 1) sortuj malejąco według localCost
@@ -171,17 +167,6 @@ class MainActivity : AppCompatActivity() {
             if (localCost.all { it == 0.0 }) break
         }
         return result
-    }
-
-    private fun sort() {
-        for (i in 0 until cost.size) {
-            for (j in 0 until cost.size - i - 1) {
-                if (cost[j] < cost[j + 1]) {
-                    Collections.swap(cost, j, j + 1)
-                    Collections.swap(people, j, j + 1)
-                }
-            }
-        }
     }
 
     private fun checkValues(list: List<Double>): String {
